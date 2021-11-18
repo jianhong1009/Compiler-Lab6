@@ -87,7 +87,7 @@ public class PostfixExpression2 {
                 continue;
             }
 
-            if (Character.isLetter(str1[i]) || str1[i] == '_') {
+            if (Character.isLetter(str1[i]) || str1[i] == '_' || str1[i] == '@') {
                 string += str1[i];
                 i++;
                 flag = true;
@@ -96,7 +96,13 @@ public class PostfixExpression2 {
                 }
             }
             if (flag) {
-                System.out.println("    %" + (Visitor.num + 1) + " = load i32, i32* " + Variable.getStore(string));
+                if (string.equals("@getint")) {
+                    System.out.println("    %" + (Visitor.num + 1) + " = call i32 @getint()");
+                } else if (string.equals("@getch")) {
+                    System.out.println("    %" + (Visitor.num + 1) + " = call i32 @getch()");
+                } else {
+                    System.out.println("    %" + (Visitor.num + 1) + " = load i32, i32* " + Variable.getStore(string));
+                }
                 Visitor.num++;
                 list.add("%" + Visitor.num);
                 listI32.add("i32");

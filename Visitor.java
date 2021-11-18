@@ -409,9 +409,10 @@ public class Visitor extends lab6BaseVisitor<Void> {
             String func = ctx.ident().getText();
             if (func.equals("getint") || func.equals("getch") || func.equals("putint") || func.equals("putch")) {
                 if (func.equals("getint") && ctx.funcRParams() == null) {
-                    System.out.println("    %" + (num + 1) + " = call i32 @getint()");
-                    num++;
-                    funcFlag = true;
+//                    System.out.println("    %" + (num + 1) + " = call i32 @getint()");
+//                    num++;
+//                    funcFlag = true;
+                    exp += "@getint";
                 } else if (func.equals("putint") && ctx.funcRParams() != null) {
                     exp = "";
                     visit(ctx.funcRParams());
@@ -419,9 +420,10 @@ public class Visitor extends lab6BaseVisitor<Void> {
                     System.out.println("    call void @putint(i32 " + s + ")");
                     funcFlag = true;
                 } else if (func.equals("getch") && ctx.funcRParams() == null) {
-                    System.out.println("    %" + (num + 1) + " = call i32 @getch()");
-                    num++;
-                    funcFlag = true;
+//                    System.out.println("    %" + (num + 1) + " = call i32 @getch()");
+//                    num++;
+//                    funcFlag = true;
+                    exp += "@getch";
                 } else if (func.equals("putch") && ctx.funcRParams() != null) {
                     exp = "";
                     visit(ctx.funcRParams());
