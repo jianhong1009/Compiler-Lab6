@@ -145,16 +145,24 @@ public class Visitor extends lab6BaseVisitor<Void> {
             int tempWhileNum = whileNum;
             visit(ctx.stmt(0));
             whileNum = tempWhileNum;
-            System.out.println("    br label %start_" + whileNum);
+            if (endFlag) {
+                endFlag = false;
+            } else {
+                System.out.println("    br label %start_" + whileNum);
+            }
 
             System.out.println("false_" + whileNum + ":");
             whileNumStack.pop();
         } else if (ctx.break_() != null) {
-            System.out.println("    br label %false_" + whileNumStack.peek());
-            endFlag = true;
+            if (!endFlag) {
+                System.out.println("    br label %false_" + whileNumStack.peek());
+                endFlag = true;
+            }
         } else if (ctx.continue_() != null) {
-            System.out.println("    br label %start_" + whileNumStack.peek());
-            endFlag = true;
+            if (!endFlag) {
+                System.out.println("    br label %start_" + whileNumStack.peek());
+                endFlag = true;
+            }
         } else {
             exp = "";
             if (ctx.exp() != null) {
@@ -286,7 +294,6 @@ public class Visitor extends lab6BaseVisitor<Void> {
             if (!funcFlag) {
                 s = new PostfixExpression().func(exp);
             } else {
-                System.exit(2);
                 s = "%" + num;
                 funcFlag = false;
             }
