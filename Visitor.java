@@ -286,6 +286,7 @@ public class Visitor extends lab6BaseVisitor<Void> {
             if (!funcFlag) {
                 s = new PostfixExpression().func(exp);
             } else {
+                System.exit(2);
                 s = "%" + num;
                 funcFlag = false;
             }
