@@ -148,13 +148,15 @@ public class Visitor extends lab6BaseVisitor<Void> {
             System.out.println("false_" + whileNum + ":");
         } else {
             exp = "";
-            visit(ctx.exp());
-            String s = "";
-            if (!funcFlag) {
-                s = new PostfixExpression().func(exp);
-            } else {
-                s = "%" + num;
-                funcFlag = false;
+            if (ctx.exp() != null) {
+                visit(ctx.exp());
+                String s = "";
+                if (!funcFlag) {
+                    s = new PostfixExpression().func(exp);
+                } else {
+                    s = "%" + num;
+                    funcFlag = false;
+                }
             }
         }
         return null;
