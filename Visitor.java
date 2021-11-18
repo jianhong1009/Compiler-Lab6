@@ -15,6 +15,7 @@ public class Visitor extends lab6BaseVisitor<Void> {
     public static boolean funcFlag = false;
     public static boolean globalVarFlag = false;
     public static Stack<Integer> blockNumStack = new Stack<>();
+    public static Stack<Integer> whileNumStack = new Stack<>();
     public static int blockNum = -1;
 
     public Visitor() throws FileNotFoundException {
@@ -130,6 +131,7 @@ public class Visitor extends lab6BaseVisitor<Void> {
             System.out.println("end" + ifNum + ":");
         } else if (ctx.while_() != null) {
             whileNum++;
+            whileNumStack.push(whileNum);
             System.out.println("    br label %start_" + whileNum);
 
             exp = "";
@@ -146,6 +148,13 @@ public class Visitor extends lab6BaseVisitor<Void> {
             System.out.println("    br label %start_" + whileNum);
 
             System.out.println("false_" + whileNum + ":");
+            whileNumStack.pop();
+        } else if (ctx.break_() != null) {
+            System.out.println("    br label %false_" + whileNumStack.peek());
+            endFlag = true;
+        } else if (ctx.continue_() != null) {
+            System.out.println("    br label %start_" + whileNumStack.peek());
+            endFlag = true;
         } else {
             exp = "";
             if (ctx.exp() != null) {
