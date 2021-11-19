@@ -69,6 +69,7 @@ public class Visitor extends lab6BaseVisitor<Void> {
 
     @Override
     public Void visitStmt(lab6Parser.StmtContext ctx) {
+        ifNum++;
         if (ctx.lVal() != null) {
             if (Variable.isConst(ctx.lVal().getText())) {
                 System.exit(1);
@@ -99,7 +100,7 @@ public class Visitor extends lab6BaseVisitor<Void> {
         } else if (ctx.block() != null) {
             visit(ctx.block());
         } else if (ctx.if_() != null) {
-            ifNum++;
+
             exp = "";
             visit(ctx.cond());
             String s = new PostfixExpression2().func(exp);
@@ -512,7 +513,6 @@ public class Visitor extends lab6BaseVisitor<Void> {
     }
 
     public int testing() {
-        int a = 2;
 
         return 1;
     }
