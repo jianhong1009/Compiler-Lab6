@@ -9,7 +9,7 @@ public class Visitor extends lab6BaseVisitor<Void> {
     public static String exp = "";
     public static ArrayList<Variable> variableList = new ArrayList<>();
     public static int num = 0;
-    public static int ifNum = 0;
+    public static int ifNum = 1;
     public static int whileNum = 0;
     public static boolean endFlag = false;
     public static boolean funcFlag = false;
@@ -99,11 +99,11 @@ public class Visitor extends lab6BaseVisitor<Void> {
         } else if (ctx.block() != null) {
             visit(ctx.block());
         } else if (ctx.if_() != null) {
+            ifNum++;
             exp = "";
             visit(ctx.cond());
             String s = new PostfixExpression2().func(exp);
 
-            ifNum++;
             System.out.println("    br i1 " + s + ",label %true" + ifNum + ", label %false" + ifNum);
 
             System.out.println("true" + ifNum + ":");
@@ -489,5 +489,11 @@ public class Visitor extends lab6BaseVisitor<Void> {
             exp += String.valueOf(Integer.parseInt(s, 16));
         }
         return null;
+    }
+
+    public int testing() {
+        int a = 2;
+
+        return 1;
     }
 }
