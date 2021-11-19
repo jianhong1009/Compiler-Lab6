@@ -9,7 +9,7 @@ public class Visitor extends lab6BaseVisitor<Void> {
     public static String exp = "";
     public static ArrayList<Variable> variableList = new ArrayList<>();
     public static int num = 0;
-    public static int ifNum = 1;
+    public static int ifNum = 0;
     public static int whileNum = 0;
     public static boolean endFlag = false;
     public static boolean funcFlag = false;
@@ -177,6 +177,26 @@ public class Visitor extends lab6BaseVisitor<Void> {
             }
         }
         return null;
+    }
+
+    @Override
+    public Void visitIf_(lab6Parser.If_Context ctx) {
+        return super.visitIf_(ctx);
+    }
+
+    @Override
+    public Void visitWhile_(lab6Parser.While_Context ctx) {
+        return super.visitWhile_(ctx);
+    }
+
+    @Override
+    public Void visitBreak_(lab6Parser.Break_Context ctx) {
+        return super.visitBreak_(ctx);
+    }
+
+    @Override
+    public Void visitContinue_(lab6Parser.Continue_Context ctx) {
+        return super.visitContinue_(ctx);
     }
 
     @Override
