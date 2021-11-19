@@ -15,6 +15,7 @@ public class Visitor extends lab6BaseVisitor<Void> {
     public static boolean funcFlag = false;
     public static boolean globalVarFlag = false;
     public static Stack<Integer> blockNumStack = new Stack<>();
+    public static Stack<Integer> ifNumStack = new Stack<>();
     public static Stack<Integer> whileNumStack = new Stack<>();
     public static int blockNum = -1;
 
@@ -69,7 +70,6 @@ public class Visitor extends lab6BaseVisitor<Void> {
 
     @Override
     public Void visitStmt(lab6Parser.StmtContext ctx) {
-        ifNum++;
         if (ctx.lVal() != null) {
             if (Variable.isConst(ctx.lVal().getText())) {
                 System.exit(1);
@@ -100,7 +100,7 @@ public class Visitor extends lab6BaseVisitor<Void> {
         } else if (ctx.block() != null) {
             visit(ctx.block());
         } else if (ctx.if_() != null) {
-
+            ifNum++;
             exp = "";
             visit(ctx.cond());
             String s = new PostfixExpression2().func(exp);
@@ -110,26 +110,24 @@ public class Visitor extends lab6BaseVisitor<Void> {
             System.out.println("true" + ifNum + ":");
             int tempIfNum = ifNum;
             visit(ctx.stmt(0));
-            ifNum = tempIfNum;
+
             if (endFlag) {
                 endFlag = false;
             } else {
-                System.out.println("    br label %end" + ifNum);
+                System.out.println("    br label %end" + tempIfNum);
             }
 
-            System.out.println("false" + ifNum + ":");
-            tempIfNum = ifNum;
+            System.out.println("false" + tempIfNum + ":");
             if (ctx.stmt(1) != null) {
                 visit(ctx.stmt(1));
             }
-            ifNum = tempIfNum;
             if (endFlag) {
                 endFlag = false;
             } else {
-                System.out.println("    br label %end" + ifNum);
+                System.out.println("    br label %end" + tempIfNum);
             }
 
-            System.out.println("end" + ifNum + ":");
+            System.out.println("end" + tempIfNum + ":");
         } else if (ctx.while_() != null) {
             whileNum++;
             whileNumStack.push(whileNum);
@@ -145,14 +143,13 @@ public class Visitor extends lab6BaseVisitor<Void> {
             System.out.println("true_" + whileNum + ":");
             int tempWhileNum = whileNum;
             visit(ctx.stmt(0));
-            whileNum = tempWhileNum;
             if (endFlag) {
                 endFlag = false;
             } else {
-                System.out.println("    br label %start_" + whileNum);
+                System.out.println("    br label %start_" + tempWhileNum);
             }
 
-            System.out.println("false_" + whileNum + ":");
+            System.out.println("false_" + tempWhileNum + ":");
             whileNumStack.pop();
         } else if (ctx.break_() != null) {
             if (!endFlag) {
